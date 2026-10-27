@@ -2,13 +2,14 @@
 function makeSpiral(canvas) {
   'use strict';
   const width = 600, height = 780, phrase = 'I love you ';
-  const points = Spiral.spiralPoints(width, height);
   const ctx = canvas.getContext('2d', { alpha: false });
   canvas.width = width; canvas.height = height;
+  ctx.font = '700 7.3px Arial, sans-serif';
+  const points = Spiral.spiralPoints(width, height, Array.from(phrase, letter => ctx.measureText(letter).width + .3));
   const sample = document.createElement('canvas');
   sample.width = width; sample.height = height;
   const sampleCtx = sample.getContext('2d', { willReadFrequently: true });
-  let pixels = null, frame = 0, drawn = 0, playing = false, startedAt = 0, elapsed = 0, duration = 12500, generation = 0;
+  let pixels = null, frame = 0, drawn = 0, playing = false, startedAt = 0, elapsed = 0, duration = 11000, generation = 0;
   function clear() { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, width, height); drawn = 0; }
   function paint(until) {
     if (!pixels) return;
@@ -32,7 +33,7 @@ function makeSpiral(canvas) {
     if (progress < 1) frame = requestAnimationFrame(tick);
     else playing = false;
   }
-  function play(ms = 12500) {
+  function play(ms = 11000) {
     cancelAnimationFrame(frame); clear(); elapsed = 0; duration = ms;
     canvas.dataset.progress = '0'; playing = true; startedAt = performance.now();
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { paint(points.length); playing = false; }

@@ -11,11 +11,14 @@
     if (clean(gift.note, 140)) params.set('n', clean(gift.note, 140));
     return origin + '/f?' + params;
   }
-  function spiralPoints(width, height) {
-    const points = [], pitch = 8.4, advance = 3.1;
-    const b = pitch / (2 * Math.PI), limit = Math.hypot(width, height) / 2;
-    for (let theta = 0, radius = 2; radius <= limit + advance; theta += advance / Math.sqrt(radius * radius + b * b), radius = 2 + b * theta) {
+  function spiralPoints(width, height, letterWidths = [3.1]) {
+    const points = [], pitch = 8.4;
+    const b = pitch / (2 * Math.PI), limit = Math.hypot(width, height) / 2, maxAdvance = Math.max(...letterWidths);
+    for (let theta = 0, radius = 2; radius <= limit + maxAdvance; radius = 2 + b * theta) {
+      const index = points.length;
       points.push({ x: width / 2 + radius * Math.cos(theta), y: height / 2 + radius * Math.sin(theta), radius, angle: theta + Math.atan2(radius, b) });
+      const advance = (letterWidths[index % letterWidths.length] + letterWidths[(index + 1) % letterWidths.length]) / 2;
+      theta += advance / Math.sqrt(radius * radius + b * b);
     }
     return points;
   }

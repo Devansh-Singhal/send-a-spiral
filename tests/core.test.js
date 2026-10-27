@@ -31,3 +31,11 @@ test('personalization is bounded without splitting emoji and rejects photo paths
   assert.equal(Spiral.clean('💕'.repeat(45), 40), '💕'.repeat(40));
   assert.equal(Spiral.readGift(new URLSearchParams({p:'../../private'})).photo, '');
 });
+
+test('spiral text respects proportional letter widths instead of crowding wide letters', () => {
+  const points = Spiral.spiralPoints(360, 480, [2, 2, 8, 8, 2]);
+  const distance = i => Math.hypot(points[i+1].x-points[i].x, points[i+1].y-points[i].y);
+  assert.ok(distance(102) > distance(99) * 3, 'wide letters must leave more room along the path');
+  assert.ok(distance(101) > distance(99) * 2, 'transitions use space for both adjacent letters');
+  for (let i=1;i<points.length;i++) assert.ok(points[i].radius >= points[i-1].radius);
+});

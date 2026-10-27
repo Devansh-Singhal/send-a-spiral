@@ -16,6 +16,7 @@ function drawing({ reduced = false, pixel = photoPixel } = {}) {
     const stack = [];
     const context = {
       fillStyle: '#000', x: 0, y: 0, angle: 0, glyphs: [], clears: 0, image: null,
+      measureText(char) { return {width: char === 'I' || char === 'l' || char === ' ' ? 2 : 4}; },
       fillRect(x, y, width, height) {
         assert.deepEqual([x, y, width, height], [0, 0, element.width, element.height]);
         this.glyphs = []; this.image = null; this.clears++;
