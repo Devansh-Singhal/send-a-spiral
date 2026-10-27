@@ -1,0 +1,14 @@
+.vercel/
+node_modules/
+.env*
+WORKFLOW.md
+PRODUCT.md
+DESIGN.md
+docs/
+.private/
+.impeccable/
+work/
+uploads/
+
+.vercel
+.env*

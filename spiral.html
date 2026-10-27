@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#000000">
+  <!--META--><meta name="referrer" content="no-referrer"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+  <script src="/analytics.js" defer></script><script src="/core.js" defer></script><script src="/draw.js" defer></script><script src="/receive.js" defer></script>
+</head><body class="gift-page">
+<audio id="bgm" src="/spiral-audio-v1.mp3" preload="auto"></audio>
+<button id="reveal" class="entry-gate" type="button" aria-label="Open your spiral"><span class="g1" id="gate-name"><!--GATE_NAME--></span><span class="g2">tap to open</span></button>
+<main class="gift" id="experience" hidden>
+  <header><p id="sender" class="sender"></p><h1 id="recipient"></h1></header>
+  <div class="gift-art"><canvas id="spiral" role="img" aria-label="Your photo drawn in a red spiral of I love you lettering"></canvas><p id="photo-status" class="fine" role="status" hidden></p><button id="retry-photo" class="text-button" type="button" hidden>Try loading the photo again</button></div>
+  <div id="message" class="message"><p id="note"></p><p id="signature" class="sender"></p></div>
+  <nav class="gift-actions" aria-label="Spiral actions"><button id="replay" class="text-button" type="button">Watch it again</button><button id="sound" class="text-button" type="button" aria-label="Mute sound" aria-pressed="true">Sound on</button><a href="/">Make a spiral for someone</a></nav>
+</main><noscript><p>A little love, just for you. Turn on JavaScript to see your photo spiral into view.</p></noscript>
+</body></html>

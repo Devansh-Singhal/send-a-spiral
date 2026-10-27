@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07060a"><title>Send a Spiral — A photo made of love</title>
+  <meta name="description" content="Turn a photo into a red spiral of I love you. Add a name and note, then share a little surprise.">
+  <meta property="og:type" content="website"><meta property="og:title" content="A photo. A thousand I love yous.">
+  <meta property="og:description" content="Upload a photo, add their name, and send a spiral made of love."><meta property="og:image" content="https://send-a-spiral.vercel.app/og.png"><meta property="og:url" content="https://send-a-spiral.vercel.app/">
+  <meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+  <script src="/analytics.js" defer></script><script src="/core.js" defer></script><script src="/draw.js" defer></script><script src="/photo.js" defer></script>
+  <script src="/qrcode.js" defer></script><script src="/heartqr.js" defer></script><script src="/create.js" defer></script>
+</head>
+<body>
+<main class="creator">
+  <header><h1>A photo. A thousand<br><em>I love yous.</em></h1><p class="lede">Their favourite photo, drawn in a spiral of love. Make a little surprise they can open.</p></header>
+  <figure class="preview"><canvas id="spiral" role="img" aria-label="A photo revealed in a red spiral of I love you lettering"></canvas><figcaption id="preview-name">A little love, coming into view.</figcaption></figure>
+  <form id="create" novalidate>
+    <div class="field"><label for="photo">Choose your photo</label><input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif" aria-describedby="photo-help photo-error"><p id="photo-help" class="fine">Portraits with a clear face work beautifully. Your photo becomes a red spiral of love.</p><p id="photo-error" class="error" role="alert" hidden></p></div>
+    <div class="field"><label for="to">Who's it for?</label><input id="to" name="to" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Their name" required aria-describedby="error"><p id="error" class="error" hidden>Add their name to make a spiral.</p></div>
+    <div class="field"><label for="from">From <span>(optional)</span></label><input id="from" name="from" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Your name"></div>
+    <div class="field"><label for="note">A little note <span>(optional)</span></label><textarea id="note" name="note" maxlength="280" rows="3" placeholder="Every little part of me loves you."></textarea><span class="count" id="count">0 / 140</span></div>
+    <p class="fine">Your photo is saved when you create the link. Anyone with the link can view it.</p>
+    <button id="submit" class="primary" type="submit">Create their spiral</button><p id="create-error" class="error" role="alert" hidden></p>
+  </form>
+  <section id="result" class="result" hidden aria-labelledby="ready">
+    <h2 id="ready" tabindex="-1">Their spiral is ready.</h2><label for="link" class="sr-only">Their shareable link</label><input id="link" readonly>
+    <div class="actions"><button id="copy" class="primary" type="button">Copy link</button><a id="whatsapp" class="button" target="_blank" rel="noopener noreferrer">WhatsApp</a><button id="share" type="button" hidden>Share…</button><a id="open" class="button" target="_blank" rel="noopener noreferrer">Open it</a></div>
+    <button id="makeqr" type="button">Make a heart QR code</button><div id="qrbox" hidden><canvas id="qr" width="1000" height="1000" role="img" aria-label="QR code that opens their spiral"></canvas><div class="actions"><button id="saveqr" type="button">Save QR</button><button id="qrstyle" type="button">Use a plain QR</button></div><p class="fine">Put a little surprise on a card or a gift.</p></div>
+    <p class="fine">They open the link, tap, and watch your photo spiral into view.</p>
+  </section>
+  <footer><p>Free to make. No sign-up. Just a little love.</p><a href="https://github.com/Devansh-Singhal/send-a-spiral" target="_blank" rel="noopener noreferrer">Star it on GitHub</a><a href="https://sendabouquet.vercel.app" target="_blank" rel="noopener noreferrer">Send flowers, too</a><a href="https://send-a-heart.vercel.app" target="_blank" rel="noopener noreferrer">Send a heart</a><p class="fine">Made by Devansh Singhal</p><p class="fine demo-credit">Preview artwork: Girl with a Pearl Earring, Johannes Vermeer.</p></footer>
+</main><p id="status" class="toast" role="status"></p>
+</body></html>

@@ -1,0 +1,14 @@
+{
+  "name": "send-a-spiral",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node local-server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.8.2"
+  },
+  "overrides": { "zod": "4.6.7" },
+  "license": "MIT"
+}

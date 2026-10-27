@@ -1,0 +1,14 @@
+.git
+.env*
+node_modules
+tests
+local-server.js
+WORKFLOW.md
+PRODUCT.md
+DESIGN.md
+docs
+.private
+.impeccable
+work
+uploads
+demo.gif
