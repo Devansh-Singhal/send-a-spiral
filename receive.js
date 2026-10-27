@@ -3,9 +3,9 @@
   const $ = id => document.getElementById(id), gift = Spiral.readGift(new URLSearchParams(location.search));
   $('gate-name').textContent = gift.to || 'for you'; $('recipient').textContent = gift.to ? 'For ' + gift.to + '.' : 'For you.';
   $('sender').textContent = gift.from ? gift.from + ' made this for you.' : 'Someone made this for you.';
-  $('note').textContent = gift.note || 'Every little part of me loves you.'; $('signature').textContent = gift.from ? 'With love, ' + gift.from : 'Made just for you.';
+  $('note').textContent = gift.note || gift.text + '.'; $('signature').textContent = gift.from ? 'With love, ' + gift.from : 'Made just for you.';
   document.title = gift.to ? 'A spiral for ' + gift.to : 'A spiral for you';
-  const drawing = makeSpiral($('spiral')), bgm = $('bgm'), sound = $('sound');
+  const drawing = makeSpiral($('spiral'), gift.text), bgm = $('bgm'), sound = $('sound');
   let started = false, ready = false, resumeOnReturn = false, loading = false;
   bgm.volume = .85; drawing.still(0);
   function soundState(blocked = false) {

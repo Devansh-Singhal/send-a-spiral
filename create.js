@@ -2,7 +2,18 @@
   'use strict';
   const $ = id => document.getElementById(id), drawing = makeSpiral($('spiral')), crop = makePhotoCrop($('crop-canvas'));
   let prepared = '', uploaded = '', current = '', plain = false, timer, uploadVersion = 0, cropSelection = null;
-  const gift = () => ({ to: Spiral.clean($('to').value, 40), from: Spiral.clean($('from').value, 40), note: Spiral.clean($('note').value, 140), photo: uploaded });
+  const wordCards = Array.from(document.querySelectorAll('input[name="words"]'));
+  const words = () => { const value = wordCards.find(card => card.checked).value; return value === 'custom' ? Spiral.clean($('custom-words').value, 40) : value; };
+  const gift = () => ({ to: Spiral.clean($('to').value, 40), from: Spiral.clean($('from').value, 40), note: Spiral.clean($('note').value, 140), photo: uploaded, text: words() });
+  function updateWords() {
+    const custom = wordCards.find(card => card.checked).value === 'custom';
+    $('custom-words-field').hidden = !custom;
+    $('custom-words').value = Array.from($('custom-words').value).slice(0,40).join('');
+    $('words-error').hidden = true; $('custom-words').removeAttribute('aria-invalid'); $('result').hidden = true;
+    drawing.setText(words()); drawing.play();
+  }
+  wordCards.forEach(card => card.addEventListener('change', () => { updateWords(); if (card.value === 'custom' && card.checked) $('custom-words').focus(); }));
+  $('custom-words').addEventListener('input', updateWords);
   drawing.load('/demo-photo.jpg').then(() => { if (!prepared) drawing.play(); }).catch(() => { $('preview-name').textContent = 'Choose a photo to see your spiral.'; });
   function toast(text) { $('status').textContent = text; $('status').classList.add('on'); clearTimeout(timer); timer = setTimeout(() => $('status').classList.remove('on'), 3000); }
   $('photo').addEventListener('change', async () => {
@@ -59,6 +70,7 @@
     event.preventDefault();
     if ($('submit').disabled) return;
     if (!prepared) { $('photo-error').textContent = 'Choose a photo to make it yours.'; $('photo-error').hidden = false; $('photo').setAttribute('aria-invalid','true'); $('photo').focus(); return; }
+    if (!words()) { $('words-error').hidden = false; $('custom-words').setAttribute('aria-invalid','true'); $('custom-words').focus(); return; }
     if (!gift().to) { $('error').hidden = false; $('to').setAttribute('aria-invalid', 'true'); $('to').focus(); return; }
     $('create-error').hidden = true; $('submit').disabled = true; $('crop-open').disabled = true; $('photo').disabled = true; $('submit').textContent = 'Making their spiral…';
     const version = uploadVersion;
@@ -90,7 +102,7 @@
   });
   function drawQR() {
     try { (plain ? window.drawPlainQR : window.drawHeartQR)($('qr'), current); $('qrstyle').textContent = plain ? 'Use a heart QR' : 'Use a plain QR'; $('qrbox').hidden = false; }
-    catch { if (!plain) { plain = true; drawQR(); } else { $('qrbox').hidden = true; toast('This link is too long for a QR. Try a shorter note.'); } }
+    catch { if (!plain) { plain = true; drawQR(); } else { $('qrbox').hidden = true; toast('This link is too long for a QR. Try shorter words or a shorter note.'); } }
   }
   $('makeqr').addEventListener('click', () => { plain = false; drawQR(); });
   $('qrstyle').addEventListener('click', () => { plain = !plain; drawQR(); });

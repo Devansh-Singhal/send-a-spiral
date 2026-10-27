@@ -7,11 +7,21 @@ const Spiral = fs.existsSync(corePath) ? require(corePath) : {};
 
 test('gift links preserve Unicode, punctuation and a valid short photo identifier', () => {
   assert.equal(typeof Spiral.linkFor, 'function');
-  const gift = { to: 'Love 💕 & $& <you>', from: 'Jo 李', note: 'A note? #yes / always', photo: 'a'.repeat(32) };
+  const gift = { to: 'Love 💕 & $& <you>', from: 'Jo 李', note: 'A note? #yes / always', photo: 'a'.repeat(32), text: 'I love you' };
   const url = new URL(Spiral.linkFor('https://gift.test', gift));
   assert.equal(url.pathname, '/f');
   assert.deepEqual(Spiral.readGift(url.searchParams), gift);
   assert.ok(url.href.length < 400);
+});
+
+test('chosen spiral words survive the share link and old links keep I love you',()=>{
+  for(const text of ['I like you','I miss you','You & me 💕 <always>']) {
+    const link=Spiral.linkFor('https://gift.test',{to:'Someone',photo:'a'.repeat(32),text});
+    assert.equal(Spiral.readGift(new URL(link).searchParams).text,text);
+  }
+  assert.equal(Spiral.readGift(new URLSearchParams()).text,'I love you');
+  assert.equal(Spiral.readGift(new URLSearchParams({w:'💕'.repeat(50)})).text,'💕'.repeat(40));
+  assert.ok(!new URL(Spiral.linkFor('https://gift.test',{text:'I love you'})).searchParams.has('w'));
 });
 
 test('spiral starts at the centre and grows continuously outwards', () => {

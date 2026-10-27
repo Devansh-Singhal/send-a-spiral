@@ -12,7 +12,7 @@
 </head>
 <body>
 <main class="creator">
-  <header><h1>A photo. A thousand<br><em>I love yous.</em></h1><p class="lede">Their favourite photo, drawn in a spiral of love. Make a little surprise they can open.</p></header>
+  <header><h1>A photo. A thousand<br><em>ways to say it.</em></h1><p class="lede">Their favourite photo, drawn in your words. Make a little surprise they can open.</p></header>
   <figure class="preview"><canvas id="spiral" role="img" aria-label="A photo revealed in a red spiral of I love you lettering"></canvas><figcaption id="preview-name">A little love, coming into view.</figcaption></figure>
   <form id="create" novalidate>
     <div class="field"><label for="photo">Choose your photo</label><input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif" aria-describedby="photo-help photo-error"><p id="photo-help" class="fine">Tip: crop close to your subject. Less background makes the spiral clearer.</p><p id="photo-error" class="error" role="alert" hidden></p><button id="crop-open" type="button" hidden>Crop photo</button></div>
@@ -22,6 +22,13 @@
       <p id="crop-help" class="fine">Drag any edge or corner to crop freely. Drag inside to move. Arrow keys move the crop; Shift + arrows resize it.</p>
       <div class="actions"><button id="crop-apply" class="primary" type="button">Use this crop</button><button id="crop-cancel" type="button">Cancel</button></div><button id="crop-reset" class="text-button" type="button">Reset crop</button>
     </section>
+    <fieldset class="word-picker"><legend>What should the spiral say?</legend><div class="word-cards">
+      <label><input type="radio" name="words" value="I love you" checked><span>I love you</span></label>
+      <label><input type="radio" name="words" value="I like you"><span>I like you</span></label>
+      <label><input type="radio" name="words" value="I miss you"><span>I miss you</span></label>
+      <label><input type="radio" name="words" value="custom"><span>Custom</span></label>
+    </div></fieldset>
+    <div id="custom-words-field" class="field" hidden><label for="custom-words">Your words</label><input id="custom-words" name="custom-words" maxlength="80" autocomplete="off" placeholder="Always you, in every lifetime" aria-describedby="words-help words-error"><p id="words-help" class="fine">Up to 40 characters. A short phrase reads best.</p><p id="words-error" class="error" hidden>Add the words you want in the spiral.</p></div>
     <div class="field"><label for="to">Who's it for?</label><input id="to" name="to" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Their name" required aria-describedby="error"><p id="error" class="error" hidden>Add their name to make a spiral.</p></div>
     <div class="field"><label for="from">From <span>(optional)</span></label><input id="from" name="from" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Your name"></div>
     <div class="field"><label for="note">A little note <span>(optional)</span></label><textarea id="note" name="note" maxlength="280" rows="3" placeholder="Every little part of me loves you."></textarea><span class="count" id="count">0 / 140</span></div>

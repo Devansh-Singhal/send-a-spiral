@@ -1,11 +1,10 @@
 /* Repeated lettering follows one continuous spiral; photo brightness becomes red. */
-function makeSpiral(canvas) {
+function makeSpiral(canvas, text) {
   'use strict';
-  const width = 600, height = 780, phrase = 'I love you ';
+  const width = 600, height = 780;
+  let phrase, points;
   const ctx = canvas.getContext('2d', { alpha: false });
   canvas.width = width; canvas.height = height;
-  ctx.font = '700 7.3px Arial, sans-serif';
-  const points = Spiral.spiralPoints(width, height, Array.from(phrase, letter => ctx.measureText(letter).width + .3));
   const sample = document.createElement('canvas');
   sample.width = width; sample.height = height;
   const sampleCtx = sample.getContext('2d', { willReadFrequently: true });
@@ -43,6 +42,13 @@ function makeSpiral(canvas) {
     cancelAnimationFrame(frame); playing = false; clear(); canvas.dataset.progress = '0';
     paint(Math.floor(points.length * progress));
   }
+  function setText(value) {
+    phrase = Array.from((Spiral.clean(value, 40) || 'I love you') + ' ');
+    ctx.font = '700 7.3px Arial, sans-serif';
+    points = Spiral.spiralPoints(width, height, phrase.map(letter => ctx.measureText(letter).width + .3));
+    canvas.setAttribute('aria-label', 'Your photo drawn in a red spiral of ' + phrase.join('').trim());
+    still(0);
+  }
   async function load(src, isCurrent = () => true) {
     const version = ++generation;
     const img = new Image();
@@ -60,6 +66,6 @@ function makeSpiral(canvas) {
     if (document.hidden) { elapsed += performance.now() - startedAt; cancelAnimationFrame(frame); }
     else { startedAt = performance.now(); frame = requestAnimationFrame(tick); }
   });
-  clear(); canvas.dataset.progress = '0';
-  return { load, play, still };
+  setText(text);
+  return { load, play, still, setText };
 }

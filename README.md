@@ -3,7 +3,7 @@
 # 🌀 Send a Spiral
 
 **Send someone a photo made of a thousand I love yous.**
-Choose a photo, add their name and a note, then share a little surprise. One tap reveals their portrait in a red spiral of love on black, with music.
+Choose a photo and the words it should say, add their name and a note, then share a little surprise. One tap reveals their portrait in a red spiral of your words on black, with music.
 
 ### [→ Make one now (free, no sign-up)](https://send-a-spiral.vercel.app)
 
@@ -20,10 +20,12 @@ Choose a photo, add their name and a note, then share a little surprise. One tap
 ## How to send one
 
 1. Open **[the site](https://send-a-spiral.vercel.app)**.
-2. Choose a photo and type their name. Add your name and a short note if you'd like.
+2. Choose a photo, select **I love you**, **I like you**, **I miss you**, or **Custom**, and type their name. Add your name and a short note if you'd like.
 3. Tap **Create their spiral**, then **Copy link**, **WhatsApp**, or your phone's share button.
 
 Optional: after choosing a photo, **Crop photo** opens an inline editor. Drag any edge or corner to crop freely, then drag inside to move the selection. Arrow keys move it; Shift + arrows resize it. **Use this crop** applies it; **Cancel** keeps the previous photo. **Reset crop** selects the full photo.
+
+Custom words can be up to 40 characters. Short phrases read best along the spiral; your choice travels in the gift link.
 
 Their link opens on their name. When they tap, the music starts and your photo comes into view, letter by letter. You can also save a heart-shaped QR code for a card or gift, or switch to a plain QR.
 
@@ -31,7 +33,7 @@ The names and note live inside the link, with no database or account needed. The
 
 ## How it works
 
-- **The portrait:** repeated red “I love you” lettering follows one continuous spiral on black. Each letter takes its brightness from your photo, gradually revealing the portrait in shades of red.
+- **The portrait:** your chosen words repeat in red lettering along one continuous spiral on black. Each letter takes its brightness from your photo, gradually revealing the portrait in shades of red.
 - **The music:** the soundtrack starts after the recipient taps to open. They can replay the reveal or turn sound off. Playback pauses when the page is hidden, and reduced-motion users see the finished spiral after opening.
 - **The photo:** your browser prepares a smaller JPEG before uploading it. An applied crop is encoded into that JPEG; cropping close to the subject with less background makes the spiral clearer. Production uploads use a private Vercel Blob store and are served through the app using the photo reference in the gift link.
 - **Link previews:** each recipient link includes their name in its title. The photo itself is not used as the link-preview image.

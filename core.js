@@ -3,12 +3,14 @@
   const clean = (value, max) => Array.from(String(value || '').replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim()).slice(0, max).join('');
   const photoId = value => /^[a-f0-9]{32}$/.test(value || '') ? value : '';
   function readGift(params) {
-    return { to: clean(params.get('t'), 40), from: clean(params.get('f'), 40), note: clean(params.get('n'), 140), photo: photoId(params.get('p')) };
+    return { to: clean(params.get('t'), 40), from: clean(params.get('f'), 40), note: clean(params.get('n'), 140), photo: photoId(params.get('p')), text: clean(params.get('w'), 40) || 'I love you' };
   }
   function linkFor(origin, gift) {
     const params = new URLSearchParams({ t: clean(gift.to, 40), p: photoId(gift.photo) });
     if (clean(gift.from, 40)) params.set('f', clean(gift.from, 40));
     if (clean(gift.note, 140)) params.set('n', clean(gift.note, 140));
+    const text = clean(gift.text, 40);
+    if (text && text !== 'I love you') params.set('w', text);
     return origin + '/f?' + params;
   }
   function spiralPoints(width, height, letterWidths = [3.1]) {

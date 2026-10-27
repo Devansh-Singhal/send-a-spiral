@@ -83,13 +83,14 @@ test('a stale image decode cannot replace the newer crop selection',async()=>{
 });
 test('cancelling during preview decode preserves the previous photo pixels', async () => {
   const images = imageLoader(), sampled = [];
-  const output = { dataset: {}, getContext: () => ({ fillRect() {}, measureText:()=>({width:3}) }) };
+  const output = { dataset: {}, setAttribute() {}, getContext: () => ({ fillRect() {}, measureText:()=>({width:3}) }) };
   const sample = { getContext: () => ({
     fillRect() {}, drawImage(image) { sampled.push(image.src); },
     getImageData: () => ({ data: new Uint8ClampedArray(0) })
   }) };
   const environment = {
     Spiral, Image: images.Image,
+    cancelAnimationFrame() {},
     document: { createElement: () => sample, addEventListener() {} }
   };
   vm.runInNewContext(drawSource, environment);

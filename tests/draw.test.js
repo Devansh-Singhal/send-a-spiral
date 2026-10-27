@@ -12,7 +12,7 @@ function drawing({ reduced = false, pixel = photoPixel } = {}) {
   let now = 0, nextFrame = 0;
   const frames = new Map(), listeners = new Map();
   function canvas() {
-    const element = { width: 0, height: 0, dataset: {} };
+    const element = { width: 0, height: 0, dataset: {}, setAttribute() {} };
     const stack = [];
     const context = {
       fillStyle: '#000', x: 0, y: 0, angle: 0, glyphs: [], clears: 0, image: null,
@@ -199,4 +199,15 @@ test('a hidden tab pauses the reveal and resumes without counting hidden time', 
   view.frameAt(5500);
   assert.ok(Number(view.canvas.dataset.progress) > 0.49);
   assert.ok(Number(view.canvas.dataset.progress) <= 0.5);
+});
+
+test('custom words replace I love you in actual glyphs and keep Unicode characters whole',async()=>{
+  const view=drawing(); await view.api.load('synthetic-photo');
+  assert.equal(typeof view.api.setText,'function');
+  view.api.setText('Miss 💕'); view.api.play(1000); view.frameAt(250);
+  const letters=view.context.glyphs.slice(0,7).map(glyph=>glyph.text).join('');
+  assert.equal(letters,'Miss 💕 ');
+  view.api.setText('I like you');assert.equal(view.canvas.dataset.progress,'0');
+  view.api.play(1000);view.frameAt(500);
+  assert.equal(view.context.glyphs.slice(0,11).map(glyph=>glyph.text).join(''),'I like you ');
 });
