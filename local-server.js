@@ -3,7 +3,7 @@ const root = __dirname;
 process.env.SPIRAL_LOCAL_UPLOADS = path.resolve(root, '../../work/spiral-local-uploads');
 const recipient = require('./api/for'), photo = require('./api/photo');
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.mp3':'audio/mpeg','.gif':'image/gif'};
-const publicFiles = new Set(['index.html','spiral.html','style.css','core.js','draw.js','photo.js','create.js','receive.js','analytics.js','qrcode.js','heartqr.js','favicon.svg','og.png','demo-photo.jpg','spiral-audio-v1.mp3']);
+const publicFiles = new Set(['index.html','spiral.html','style.css','core.js','draw.js','photo.js','crop.js','create.js','receive.js','analytics.js','qrcode.js','heartqr.js','favicon.svg','og.png','demo-photo.jpg','spiral-audio-v1.mp3']);
 http.createServer(async (req,res) => {
   const url = new URL(req.url,'http://localhost');
   if (url.pathname === '/f' || url.pathname === '/for') return recipient(req,res);

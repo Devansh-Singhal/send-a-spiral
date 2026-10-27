@@ -23,6 +23,8 @@ Choose a photo, add their name and a note, then share a little surprise. One tap
 2. Choose a photo and type their name. Add your name and a short note if you'd like.
 3. Tap **Create their spiral**, then **Copy link**, **WhatsApp**, or your phone's share button.
 
+Optional: after choosing a photo, **Crop photo** opens an inline editor. Drag any edge or corner to crop freely, then drag inside to move the selection. Arrow keys move it; Shift + arrows resize it. **Use this crop** applies it; **Cancel** keeps the previous photo. **Reset crop** selects the full photo.
+
 Their link opens on their name. When they tap, the music starts and your photo comes into view, letter by letter. You can also save a heart-shaped QR code for a card or gift, or switch to a plain QR.
 
 The names and note live inside the link, with no database or account needed. The photo is saved when you create the link. **Anyone with the link can view the photo.**
@@ -31,7 +33,7 @@ The names and note live inside the link, with no database or account needed. The
 
 - **The portrait:** repeated red “I love you” lettering follows one continuous spiral on black. Each letter takes its brightness from your photo, gradually revealing the portrait in shades of red.
 - **The music:** the soundtrack starts after the recipient taps to open. They can replay the reveal or turn sound off. Playback pauses when the page is hidden, and reduced-motion users see the finished spiral after opening.
-- **The photo:** your browser prepares a smaller JPEG before uploading it. Production uploads use a private Vercel Blob store and are served through the app using the photo reference in the gift link.
+- **The photo:** your browser prepares a smaller JPEG before uploading it. An applied crop is encoded into that JPEG; cropping close to the subject with less background makes the spiral clearer. Production uploads use a private Vercel Blob store and are served through the app using the photo reference in the gift link.
 - **Link previews:** each recipient link includes their name in its title. The photo itself is not used as the link-preview image.
 - It's plain HTML, CSS and JavaScript, with no framework or build step. It works on phones.
 

@@ -42,12 +42,12 @@ function makeSpiral(canvas) {
     cancelAnimationFrame(frame); playing = false; clear(); canvas.dataset.progress = '0';
     paint(Math.floor(points.length * progress));
   }
-  async function load(src) {
+  async function load(src, isCurrent = () => true) {
     const version = ++generation;
     const img = new Image();
     img.src = src;
     await img.decode();
-    if (version !== generation) return;
+    if (version !== generation || !isCurrent()) return;
     sampleCtx.fillStyle = '#000'; sampleCtx.fillRect(0, 0, width, height);
     const scale = Math.min(width / img.naturalWidth, height / img.naturalHeight);
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;

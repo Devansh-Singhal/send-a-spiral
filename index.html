@@ -7,7 +7,7 @@
   <meta property="og:type" content="website"><meta property="og:title" content="A photo. A thousand I love yous.">
   <meta property="og:description" content="Upload a photo, add their name, and send a spiral made of love."><meta property="og:image" content="https://send-a-spiral.vercel.app/og.png"><meta property="og:url" content="https://send-a-spiral.vercel.app/">
   <meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
-  <script src="/analytics.js" defer></script><script src="/core.js" defer></script><script src="/draw.js" defer></script><script src="/photo.js" defer></script>
+  <script src="/analytics.js" defer></script><script src="/core.js" defer></script><script src="/draw.js" defer></script><script src="/photo.js" defer></script><script src="/crop.js" defer></script>
   <script src="/qrcode.js" defer></script><script src="/heartqr.js" defer></script><script src="/create.js" defer></script>
 </head>
 <body>
@@ -15,7 +15,13 @@
   <header><h1>A photo. A thousand<br><em>I love yous.</em></h1><p class="lede">Their favourite photo, drawn in a spiral of love. Make a little surprise they can open.</p></header>
   <figure class="preview"><canvas id="spiral" role="img" aria-label="A photo revealed in a red spiral of I love you lettering"></canvas><figcaption id="preview-name">A little love, coming into view.</figcaption></figure>
   <form id="create" novalidate>
-    <div class="field"><label for="photo">Choose your photo</label><input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif" aria-describedby="photo-help photo-error"><p id="photo-help" class="fine">Portraits with a clear face work beautifully. Your photo becomes a red spiral of love.</p><p id="photo-error" class="error" role="alert" hidden></p></div>
+    <div class="field"><label for="photo">Choose your photo</label><input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif" aria-describedby="photo-help photo-error"><p id="photo-help" class="fine">Tip: crop close to your subject. Less background makes the spiral clearer.</p><p id="photo-error" class="error" role="alert" hidden></p><button id="crop-open" type="button" hidden>Crop photo</button></div>
+    <section id="crop-editor" class="crop-editor" hidden aria-labelledby="crop-heading">
+      <h2 id="crop-heading">Bring them closer.</h2>
+      <canvas id="crop-canvas" width="600" height="780" tabindex="0" role="img" aria-label="Photo crop preview" aria-describedby="crop-help"></canvas>
+      <p id="crop-help" class="fine">Drag any edge or corner to crop freely. Drag inside to move. Arrow keys move the crop; Shift + arrows resize it.</p>
+      <div class="actions"><button id="crop-apply" class="primary" type="button">Use this crop</button><button id="crop-cancel" type="button">Cancel</button></div><button id="crop-reset" class="text-button" type="button">Reset crop</button>
+    </section>
     <div class="field"><label for="to">Who's it for?</label><input id="to" name="to" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Their name" required aria-describedby="error"><p id="error" class="error" hidden>Add their name to make a spiral.</p></div>
     <div class="field"><label for="from">From <span>(optional)</span></label><input id="from" name="from" maxlength="80" autocomplete="off" autocapitalize="words" placeholder="Your name"></div>
     <div class="field"><label for="note">A little note <span>(optional)</span></label><textarea id="note" name="note" maxlength="280" rows="3" placeholder="Every little part of me loves you."></textarea><span class="count" id="count">0 / 140</span></div>

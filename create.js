@@ -1,26 +1,52 @@
 (() => {
   'use strict';
-  const $ = id => document.getElementById(id), drawing = makeSpiral($('spiral'));
-  let prepared = '', uploaded = '', current = '', plain = false, timer, uploadVersion = 0;
+  const $ = id => document.getElementById(id), drawing = makeSpiral($('spiral')), crop = makePhotoCrop($('crop-canvas'));
+  let prepared = '', uploaded = '', current = '', plain = false, timer, uploadVersion = 0, cropSelection = null;
   const gift = () => ({ to: Spiral.clean($('to').value, 40), from: Spiral.clean($('from').value, 40), note: Spiral.clean($('note').value, 140), photo: uploaded });
   drawing.load('/demo-photo.jpg').then(() => { if (!prepared) drawing.play(); }).catch(() => { $('preview-name').textContent = 'Choose a photo to see your spiral.'; });
   function toast(text) { $('status').textContent = text; $('status').classList.add('on'); clearTimeout(timer); timer = setTimeout(() => $('status').classList.remove('on'), 3000); }
   $('photo').addEventListener('change', async () => {
     const version = ++uploadVersion;
-    prepared = ''; uploaded = ''; $('result').hidden = true; $('photo-error').hidden = true; $('photo').removeAttribute('aria-invalid');
+    prepared = ''; uploaded = ''; cropSelection = null; $('crop-editor').hidden = true; $('crop-open').hidden = true; $('crop-open').textContent = 'Crop photo'; $('result').hidden = true; $('photo-error').hidden = true; $('photo').removeAttribute('aria-invalid');
     const file = $('photo').files[0]; if (!file) return;
     $('submit').disabled = true; $('preview-name').textContent = 'Preparing your photo…';
     try {
       const image = await preparePhoto(file);
       if (version !== uploadVersion) return;
-      prepared = image; await drawing.load(image);
+      prepared = image; await drawing.load(image, () => version === uploadVersion);
       if (version !== uploadVersion) return;
-      drawing.play(); $('preview-name').textContent = gift().to ? 'A spiral for ' + gift().to : 'Your photo, made of love.';
+      drawing.play(); $('crop-open').hidden = false; $('preview-name').textContent = gift().to ? 'A spiral for ' + gift().to : 'Your photo, made of love.';
     } catch (error) {
       if (version !== uploadVersion) return;
       prepared = ''; $('photo-error').textContent = error.message; $('photo-error').hidden = false; $('photo').setAttribute('aria-invalid', 'true');
       $('preview-name').textContent = 'Choose another photo to try again.';
     } finally { if (version === uploadVersion) $('submit').disabled = false; }
+  });
+  $('crop-open').addEventListener('click', async () => {
+    if (!$('crop-editor').hidden) { $('crop-canvas').focus(); return; }
+    const version = uploadVersion;
+    $('submit').disabled = true; $('crop-open').disabled = true;
+    try {
+      await crop.load($('photo').files[0], cropSelection);
+      if (version !== uploadVersion) return;
+      $('crop-editor').hidden = false; $('crop-canvas').focus();
+    } catch { if (version === uploadVersion) { toast('This photo could not open for cropping. Choose it again.'); $('submit').disabled = false; } }
+    finally { $('crop-open').disabled = false; }
+  });
+  $('crop-reset').addEventListener('click', () => crop.reset());
+  $('crop-cancel').addEventListener('click', () => { ++uploadVersion; $('crop-editor').hidden = true; $('submit').disabled = false; $('crop-open').focus(); });
+  $('crop-apply').addEventListener('click', async () => {
+    const version = ++uploadVersion;
+    $('crop-apply').disabled = true;
+    try {
+      const selection = crop.selection(), image = await preparePhoto($('photo').files[0], selection);
+      if (version !== uploadVersion) return;
+      await drawing.load(image, () => version === uploadVersion);
+      if (version !== uploadVersion) return;
+      cropSelection = selection; prepared = image; uploaded = ''; $('result').hidden = true; $('crop-editor').hidden = true;
+      drawing.play(); $('crop-open').textContent = 'Adjust crop'; $('crop-open').focus();
+    } catch (error) { toast(error.message); }
+    finally { $('crop-apply').disabled = false; if (version === uploadVersion) $('submit').disabled = !$('crop-editor').hidden; }
   });
   ['to', 'from', 'note'].forEach(id => $(id).addEventListener('input', () => {
     $(id).value = Array.from($(id).value).slice(0, id === 'note' ? 140 : 40).join('');
@@ -34,7 +60,7 @@
     if ($('submit').disabled) return;
     if (!prepared) { $('photo-error').textContent = 'Choose a photo to make it yours.'; $('photo-error').hidden = false; $('photo').setAttribute('aria-invalid','true'); $('photo').focus(); return; }
     if (!gift().to) { $('error').hidden = false; $('to').setAttribute('aria-invalid', 'true'); $('to').focus(); return; }
-    $('create-error').hidden = true; $('submit').disabled = true; $('submit').textContent = 'Making their spiral…';
+    $('create-error').hidden = true; $('submit').disabled = true; $('crop-open').disabled = true; $('photo').disabled = true; $('submit').textContent = 'Making their spiral…';
     const version = uploadVersion;
     try {
       if (!uploaded) {
@@ -52,7 +78,7 @@
       $('result').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
       history.replaceState(null, '', '/made'); if (window.va) window.va('pageview', { route: '/made', path: '/made' });
     } catch (error) { $('create-error').textContent = error.message; $('create-error').hidden = false; }
-    finally { $('submit').disabled = false; $('submit').textContent = 'Create their spiral'; }
+    finally { $('submit').disabled = !$('crop-editor').hidden; $('crop-open').disabled = false; $('photo').disabled = false; $('submit').textContent = 'Create their spiral'; }
   });
   $('copy').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(current); toast('Link copied. Send a little love.'); }
